@@ -29,13 +29,25 @@
 			<scope>test</scope>
 		</dependency>
 
-		 <!-- opencv -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- opencv -->
 		<dependency>
 			<groupId>org.openpnp</groupId>
 			<artifactId>opencv</artifactId>
 			<version>4.3.0-3</version>
 		</dependency>
 		
+		<!-- tesseract  -->
+		<dependency>
+			<groupId>net.sourceforge.tess4j</groupId>
+			<artifactId>tess4j</artifactId>
+			<version>3.4.5</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
