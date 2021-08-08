@@ -1,15 +1,19 @@
 package com.example.javacv;
 
-public class JavacvApplication {
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
+@SpringBootApplication
+public class JavacvApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
+		SpringApplication.run(JavacvApplication.class, args);
+	}
 
-		OpenCVUtil.loadNativeOpenCv();
-		
-		var image	  = OpenCVUtil.imageRead("/home/igor/Imagens/d73tBq.jpg");
-		var graysacle = OpenCVUtil.grayScale(image);
-
-		OpenCVUtil.show("RGB", image);
-		OpenCVUtil.show("GrayScale", graysacle);
+	@Override
+	public void run(String... args) throws Exception {
+		// static test's
 	}
 }
