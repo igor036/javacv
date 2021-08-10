@@ -61,20 +61,37 @@ public class OpenCvService {
             return image;
         }
 
-        var gray = copy(image);
+        var gray = new Mat();
         Imgproc.cvtColor(image, gray, Imgproc.COLOR_RGB2GRAY);
         return gray;
     }
 
+    public Mat grayScale2BGR(Mat image) {
+
+        if (image.channels() > 1) {
+            return image;
+        }
+
+        var rgb = new Mat();
+        Imgproc.cvtColor(image, rgb, Imgproc.COLOR_GRAY2BGR);
+        return rgb;
+    }
+
+    public Mat hsv(Mat image) {
+        var hsv = new Mat();
+		Imgproc.cvtColor(image, hsv, Imgproc.COLOR_BGR2HSV);
+        return hsv;
+    }
+
     public Mat gaussianBlur(Mat image, int size) {
-        var gaussian = copy(image);
+        var gaussian = new Mat();
         Imgproc.GaussianBlur(image, gaussian, new Size(size, size), 0);
         return gaussian;
     }
 
 
     public Mat adaptiveThreshold(Mat image, int blockSize, double c) {
-        var threshold = copy(image);
+        var threshold = new Mat();
         Imgproc.adaptiveThreshold(image, threshold, THRESHOLD_MAX_VALUE, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, blockSize, c); 
         return threshold;
     }
@@ -85,6 +102,12 @@ public class OpenCvService {
         image.copyTo(copy);
         return copy;
     }
+
+    public byte[] blob(Mat image, String extension) {
+		var bytes = new MatOfByte();
+		Imgcodecs.imencode(".".concat(extension), image, bytes);
+		return bytes.toArray();
+	}
 
     public List<MatOfPoint> findContours(Mat image) {
         var contours = new ArrayList<MatOfPoint>();
