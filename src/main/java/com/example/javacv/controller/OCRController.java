@@ -4,7 +4,6 @@ import com.example.javacv.service.OCRService;
 import com.example.javacv.service.OpenCvService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("ocr")
 @SuppressWarnings("java:S1452")
-public class OCRController {
-
-    private static final String ERROR_WHEN_TRY_PROCESS_IAMGE = "Unexpected error occurred when try process your image!";
+public class OCRController extends AbstractController {
 
     @Autowired
     private OCRService oCRService;
@@ -53,10 +50,5 @@ public class OCRController {
         } catch (Exception e) {
             return internalServerError();
         }
-    }
-
-    private ResponseEntity<String> internalServerError() {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(ERROR_WHEN_TRY_PROCESS_IAMGE);
     }
 }
