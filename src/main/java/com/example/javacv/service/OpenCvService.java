@@ -4,6 +4,7 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.highgui.HighGui;
@@ -55,6 +56,12 @@ public class OpenCvService {
         HighGui.waitKey();
     }
 
+    public Mat resize(Mat image, int width, int height) {
+        var resized = new Mat(width, height, image.type());
+        Imgproc.resize(image, resized, new Size(width, height));
+        return resized;
+    }
+
     public Mat grayScale(Mat image) {
 
         if (image.channels() == 1) {
@@ -89,13 +96,23 @@ public class OpenCvService {
         return gaussian;
     }
 
+    public Mat bilateralFilter(Mat image, int d, double sigmaColor, double sigmaSpace) {
+        var bilateral = new Mat();
+        Imgproc.bilateralFilter(image, bilateral, d, sigmaColor, sigmaSpace);
+        return bilateral;
+    }
+
+    public Mat canny(Mat image, double threshold1, double threshold2) {
+        var canny = new Mat();
+        Imgproc.Canny(image, canny, threshold1, threshold2);
+        return canny;
+    }
 
     public Mat adaptiveThreshold(Mat image, int blockSize, double c) {
         var threshold = new Mat();
         Imgproc.adaptiveThreshold(image, threshold, THRESHOLD_MAX_VALUE, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, blockSize, c); 
         return threshold;
     }
-
 
     public Mat copy(Mat image) {
         Mat copy = new Mat();
@@ -133,4 +150,20 @@ public class OpenCvService {
 
         return bufferedImage;
     }
+
+
+	public boolean isRectangle(MatOfPoint contour) {
+
+		var approx = new MatOfPoint2f(); 
+		var curve  = new MatOfPoint2f(contour.toArray());
+		var peri   = Imgproc.arcLength(curve, true);
+		
+		Imgproc.approxPolyDP(curve, approx, 0.018 * peri, true);
+
+		return approx.toList().size() == 4;
+	}
+
+    public int compare(MatOfPoint c1, MatOfPoint c2) {
+		return (int) (Imgproc.contourArea(c2) - Imgproc.contourArea(c1));
+	}
 }

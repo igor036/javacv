@@ -20,6 +20,28 @@ public class OCRService {
 	@Autowired
 	private TesseractService tesseractService;
 
+    public String recognizePlate(Mat image) {
+
+        var resized = openCvService.resize(image, 620, 480);
+        var gray    = openCvService.grayScale(resized);
+		var filter  = openCvService.bilateralFilter(gray, 13, 15, 15);
+		var canny   = openCvService.canny(filter, 30, 200);
+
+       var plate = openCvService.findContours(canny).stream()
+			.sorted(openCvService::compare)
+			.filter(openCvService::isRectangle).limit(10)
+			.map(openCvService::contour2Rect)
+			.findFirst();
+
+        if (plate.isPresent()) {
+            openCvService.show(resized.submat(plate.get()));
+            return recognize(resized.submat(plate.get()));
+        }
+
+        return "";
+    }
+
+
     public String recognize(Mat image) {
 
         var processedImage = preProcess(image, 3, 15, 2);

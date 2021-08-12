@@ -51,4 +51,18 @@ public class OCRController extends AbstractController {
             return internalServerError();
         }
     }
+    @GetMapping("recognize/plate")
+    public ResponseEntity<?> recognizePlate(@RequestPart MultipartFile file) {
+
+        try {
+
+            var image = openCvService.imageRead(file.getBytes());
+            var plate = oCRService.recognizePlate(image);
+
+            return ResponseEntity.ok(plate);
+
+        } catch (Exception e) {
+            return internalServerError();
+        }
+    }
 }
