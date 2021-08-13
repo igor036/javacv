@@ -34,7 +34,6 @@ public class OCRService {
 			.findFirst();
 
         if (plate.isPresent()) {
-            openCvService.show(resized.submat(plate.get()));
             return recognize(resized.submat(plate.get()));
         }
 
